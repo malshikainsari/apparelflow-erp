@@ -4,9 +4,9 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 
 const DEMOS = [
-  { label: "Cutting Supervisor", desc: "Creates cutting orders", email: "supervisor@apparelflow.test", icon: "✂️" },
-  { label: "Cutting Verifier", desc: "Counts parts & approves", email: "verifier@apparelflow.test", icon: "✅" },
-  { label: "Sewing Supervisor", desc: "Receives verified batches", email: "sewing@apparelflow.test", icon: "🧵" },
+  { label: "Cutting Supervisor", desc: "Creates cutting orders", email: "supervisor@apparelflow.test" },
+  { label: "Cutting Verifier", desc: "Counts parts, approves or rejects", email: "verifier@apparelflow.test" },
+  { label: "Sewing Supervisor", desc: "Receives verified batches", email: "sewing@apparelflow.test" },
 ];
 const DEMO_PASSWORD = "Demo@1234";
 
@@ -42,45 +42,23 @@ export default function LoginPage() {
   }
 
   const inputClass =
-    "w-full rounded-lg border border-slate-400 bg-white px-4 py-2.5 text-slate-900 placeholder-slate-500 shadow-sm focus:border-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-600";
+    "w-full rounded-md border border-gray-400 bg-white px-3 py-2 text-gray-900 placeholder-gray-600 focus:border-black focus:outline-none focus:ring-2 focus:ring-black";
 
   return (
-    <main className="flex min-h-screen items-center justify-center bg-gradient-to-br from-indigo-50 via-white to-sky-50 p-4 text-slate-900">
-      <div className="grid w-full max-w-4xl overflow-hidden rounded-2xl bg-white shadow-xl ring-1 ring-slate-200 md:grid-cols-2">
-        {/* Left: brand panel */}
-        <section className="flex flex-col justify-between bg-indigo-900 p-8 text-white">
-          <div>
-            <div className="mb-6 flex h-12 w-12 items-center justify-center rounded-xl bg-white/15 text-2xl">
-              🧵
-            </div>
-            <h1 className="text-3xl font-bold leading-tight">ApparelFlow ERP</h1>
-            <p className="mt-2 text-indigo-100">
-              Cutting Verification &amp; Sewing Queue Gate
-            </p>
-          </div>
-          <ul className="mt-8 space-y-3 text-sm text-indigo-50">
-            <li className="flex items-start gap-2">
-              <span aria-hidden>🔒</span>
-              Server-enforced role-based access
-            </li>
-            <li className="flex items-start gap-2">
-              <span aria-hidden>🚦</span>
-              Traffic-light component verification
-            </li>
-            <li className="flex items-start gap-2">
-              <span aria-hidden>📋</span>
-              Immutable audit trail for every batch
-            </li>
-          </ul>
-        </section>
+    <main className="flex min-h-screen items-center justify-center bg-gray-100 p-4 text-gray-900">
+      <div className="w-full max-w-md">
+        <header className="mb-6 text-center">
+          <h1 className="text-2xl font-bold text-black">ApparelFlow ERP</h1>
+          <p className="mt-1 text-sm text-gray-700">
+            Cutting Verification &amp; Sewing Queue Gate
+          </p>
+        </header>
 
-        {/* Right: form */}
-        <section className="p-8">
-          <h2 className="text-2xl font-bold text-slate-900">Welcome back</h2>
-          <p className="mt-1 text-sm text-slate-700">Sign in to continue to your workspace.</p>
+        <div className="rounded-lg border border-gray-300 bg-white p-6 shadow-sm">
+          <h2 className="text-lg font-semibold text-black">Sign in</h2>
 
-          <form onSubmit={onSubmit} className="mt-6 flex flex-col gap-4" noValidate>
-            <label className="flex flex-col gap-1.5 text-sm font-medium text-slate-900">
+          <form onSubmit={onSubmit} className="mt-4 flex flex-col gap-4" noValidate>
+            <label className="flex flex-col gap-1 text-sm font-medium text-gray-900">
               Email
               <input
                 type="email"
@@ -92,7 +70,7 @@ export default function LoginPage() {
               />
             </label>
 
-            <label className="flex flex-col gap-1.5 text-sm font-medium text-slate-900">
+            <label className="flex flex-col gap-1 text-sm font-medium text-gray-900">
               Password
               <div className="relative">
                 <input
@@ -105,7 +83,7 @@ export default function LoginPage() {
                 <button
                   type="button"
                   onClick={() => setShowPw((v) => !v)}
-                  className="absolute right-2 top-1/2 -translate-y-1/2 rounded px-2 py-1 text-xs font-semibold text-indigo-800 hover:bg-indigo-50"
+                  className="absolute right-2 top-1/2 -translate-y-1/2 rounded px-2 py-1 text-xs font-semibold text-gray-900 hover:bg-gray-100"
                 >
                   {showPw ? "Hide" : "Show"}
                 </button>
@@ -115,7 +93,7 @@ export default function LoginPage() {
             {error && (
               <p
                 role="alert"
-                className="rounded-lg border border-red-700 bg-red-50 px-3 py-2 text-sm font-medium text-red-800"
+                className="rounded-md border border-red-700 bg-red-50 px-3 py-2 text-sm font-medium text-red-800"
               >
                 {error}
               </p>
@@ -124,39 +102,38 @@ export default function LoginPage() {
             <button
               type="submit"
               disabled={loading}
-              className="rounded-lg bg-indigo-800 px-4 py-2.5 font-semibold text-white shadow-sm transition hover:bg-indigo-900 focus:outline-none focus:ring-2 focus:ring-indigo-600 focus:ring-offset-2 disabled:opacity-60"
+              className="rounded-md bg-black px-4 py-2 font-semibold text-white hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-black focus:ring-offset-2 disabled:opacity-60"
             >
               {loading ? "Signing in..." : "Sign in"}
             </button>
           </form>
+        </div>
 
-          <div className="mt-8">
-            <h3 className="text-xs font-semibold uppercase tracking-wide text-slate-700">
-              Demo accounts (click to fill)
-            </h3>
-            <div className="mt-3 grid gap-2">
-              {DEMOS.map((d) => (
+        <section className="mt-4 rounded-lg border border-gray-300 bg-white p-4">
+          <h3 className="text-xs font-semibold uppercase tracking-wide text-gray-700">
+            Demo accounts (click to fill)
+          </h3>
+          <ul className="mt-3 divide-y divide-gray-200">
+            {DEMOS.map((d) => (
+              <li key={d.email}>
                 <button
-                  key={d.email}
                   type="button"
                   onClick={() => {
                     setEmail(d.email);
                     setPassword(DEMO_PASSWORD);
                     setError("");
                   }}
-                  className="flex items-center gap-3 rounded-lg border border-slate-300 bg-white px-3 py-2 text-left transition hover:border-indigo-600 hover:bg-indigo-50 focus:outline-none focus:ring-2 focus:ring-indigo-600"
+                  className="flex w-full items-center justify-between gap-3 px-1 py-2.5 text-left hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-black"
                 >
-                  <span className="flex h-9 w-9 items-center justify-center rounded-lg bg-slate-100 text-lg" aria-hidden>
-                    {d.icon}
-                  </span>
                   <span>
-                    <span className="block text-sm font-semibold text-slate-900">{d.label}</span>
-                    <span className="block text-xs text-slate-700">{d.desc}</span>
+                    <span className="block text-sm font-semibold text-gray-900">{d.label}</span>
+                    <span className="block text-xs text-gray-700">{d.desc}</span>
                   </span>
+                  <span className="text-xs font-medium text-gray-700">{d.email}</span>
                 </button>
-              ))}
-            </div>
-          </div>
+              </li>
+            ))}
+          </ul>
         </section>
       </div>
     </main>
