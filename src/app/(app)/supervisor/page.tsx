@@ -26,7 +26,10 @@ export default async function SupervisorPage() {
     }),
     prisma.cuttingOrder.findMany({
       orderBy: { createdAt: "desc" },
-      include: { recipe: { select: { name: true, recipeCode: true } } },
+      include: {
+  recipe: { select: { name: true, recipeCode: true } },
+  logs: { orderBy: { timestamp: "desc" }, take: 1, select: { rejectionNote: true } },
+},
     }),
   ]);
 
@@ -105,6 +108,9 @@ export default async function SupervisorPage() {
                         </td>
                         <td className="px-5 py-3">
                           <StatusBadge status={o.status} />
+                          {o.status === "REJECTED" && o.logs[0]?.rejectionNote && (
+                            <p className="mt-1 max-w-[220px] text-xs text-red-900">Reason: {o.logs[0].rejectionNote}</p>
+                          )}
                         </td>
                       </tr>
                     ))}

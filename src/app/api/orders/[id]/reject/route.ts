@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { prisma } from "@/lib/prisma";
+import { prisma, TX_OPTS } from "@/lib/prisma";
 import { requireRole } from "@/lib/auth";
 import { parseId } from "@/lib/http";
 import { rejectSchema } from "@/lib/schemas";
@@ -46,7 +46,7 @@ export async function POST(req: Request, ctx: { params: Promise<{ id: string }> 
       },
     });
     return { status: 200, body: { status: "REJECTED" } };
-  });
+    }, TX_OPTS);
 
   return NextResponse.json(result.body, { status: result.status });
 }

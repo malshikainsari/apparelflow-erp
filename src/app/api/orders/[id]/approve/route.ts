@@ -1,8 +1,9 @@
 import { NextResponse } from "next/server";
-import { prisma } from "@/lib/prisma";
+import { prisma, TX_OPTS } from "@/lib/prisma";
 import { requireRole } from "@/lib/auth";
 import { parseId } from "@/lib/http";
 import { checkApproval, expectedFabricYards, wastagePct } from "@/lib/domain";
+
 
 export async function POST(_req: Request, ctx: { params: Promise<{ id: string }> }) {
   const auth = await requireRole("cutting_verifier"); // 401 / 403
@@ -46,7 +47,7 @@ export async function POST(_req: Request, ctx: { params: Promise<{ id: string }>
       },
     });
     return { status: 200, body: { status: "VERIFIED", wastagePct: wastage, verifiedAt: log.timestamp } };
-  });
+    }, TX_OPTS);
 
   return NextResponse.json(result.body, { status: result.status });
 }

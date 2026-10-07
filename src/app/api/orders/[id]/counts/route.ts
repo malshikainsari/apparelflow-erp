@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { prisma } from "@/lib/prisma";
+import { prisma, TX_OPTS } from "@/lib/prisma";
 import { requireRole } from "@/lib/auth";
 import { parseId } from "@/lib/http";
 import { saveCountsSchema } from "@/lib/schemas";
@@ -45,10 +45,8 @@ export async function PUT(req: Request, ctx: { params: Promise<{ id: string }> }
         },
       });
     }
-
-    const items = await tx.verificationItem.findMany({ where: { orderId: id }, orderBy: { id: "asc" } });
-    return { status: 200, body: { items } };
-  });
+    return { status: 200, body: { saved: parsed.data.counts.length } };
+  }, TX_OPTS);
 
   return NextResponse.json(result.body, { status: result.status });
 }
