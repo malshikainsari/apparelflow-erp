@@ -11,7 +11,9 @@ const schema = z.object({
 });
 
 export async function POST(req: Request) {
-  const parsed = schema.safeParse(await req.json().catch(() => null));
+  const parsed = schema.safeParse(
+  await req.json().catch((): null => null)
+);
   if (!parsed.success) {
     return NextResponse.json({ error: "Email and password are required" }, { status: 400 });
   }

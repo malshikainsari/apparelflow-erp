@@ -5,14 +5,19 @@ import { parseId } from "@/lib/http";
 import { saveCountsSchema } from "@/lib/schemas";
 import { itemStatus } from "@/lib/domain";
 
-export async function PUT(req: Request, ctx: { params: Promise<{ id: string }> }) {
+export async function PUT(
+  req: Request,
+  ctx: { params: Promise<{ id: string }> }
+): Promise<NextResponse> {
   const auth = await requireRole("cutting_verifier");
-  if ("error" in auth) return auth.error;
+  if ("error" in auth && auth.error) return auth.error;
 
   const id = parseId((await ctx.params).id);
   if (!id) return NextResponse.json({ error: "Invalid order id" }, { status: 400 });
 
-  const parsed = saveCountsSchema.safeParse(await req.json().catch(() => null));
+  const parsed = saveCountsSchema.safeParse(
+  await req.json().catch((): null => null)
+);
   if (!parsed.success) {
     return NextResponse.json(
       { error: parsed.error.issues[0]?.message ?? "Invalid counts payload" },

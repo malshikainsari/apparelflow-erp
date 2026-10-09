@@ -5,9 +5,12 @@ import { parseId } from "@/lib/http";
 import { checkApproval, expectedFabricYards, wastagePct } from "@/lib/domain";
 
 
-export async function POST(_req: Request, ctx: { params: Promise<{ id: string }> }) {
+export async function POST(
+  _req: Request,
+  ctx: { params: Promise<{ id: string }> }
+): Promise<NextResponse> {
   const auth = await requireRole("cutting_verifier"); // 401 / 403
-  if ("error" in auth) return auth.error;
+  if ("error" in auth && auth.error) return auth.error;
 
   const id = parseId((await ctx.params).id);
   if (!id) return NextResponse.json({ error: "Invalid order id" }, { status: 400 });
@@ -24,8 +27,10 @@ export async function POST(_req: Request, ctx: { params: Promise<{ id: string }>
 
     // HARD STOP: any RED / uncounted component -> 422. Recomputed from raw numbers.
     const check = checkApproval(order.items);
-    if (!check.ok) return { status: 422, body: { error: check.reason } };
 
+if (check.ok === false) {
+  return { status: 422, body: { error: check.reason } };
+}
     const wastage = wastagePct(
       order.actualFabricYds,
       expectedFabricYards(order.targetQty, order.recipe.stdFabricYards)

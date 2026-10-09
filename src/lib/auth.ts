@@ -38,13 +38,36 @@ export async function getSession(): Promise<Session | null> {
 }
 
 /** Use at the top of every protected API route. */
-export async function requireRole(...roles: Role[]) {
+
+
+
+type RequireRoleResult =
+  | { session: Session; error?: never }
+  | { error: NextResponse; session?: never };
+
+export async function requireRole(
+  ...roles: Role[]
+): Promise<RequireRoleResult> {
   const session = await getSession();
+
   if (!session) {
-    return { error: NextResponse.json({ error: "Unauthorized" }, { status: 401 }) } as const;
+    return {
+      error: NextResponse.json(
+        { error: "Unauthorized" },
+        { status: 401 }
+      ),
+    };
   }
+
   if (!roles.includes(session.role)) {
-    return { error: NextResponse.json({ error: "Forbidden" }, { status: 403 }) } as const;
+    return {
+      error: NextResponse.json(
+        { error: "Forbidden" },
+        { status: 403 }
+      ),
+    };
   }
-  return { session } as const;
+
+  return { session };
 }
+

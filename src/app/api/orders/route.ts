@@ -16,11 +16,11 @@ export async function GET() {
   return NextResponse.json(orders);
 }
 
-export async function POST(req: Request) {
+export async function POST(req: Request): Promise<NextResponse> {
   const auth = await requireRole("cutting_supervisor");
-  if ("error" in auth) return auth.error;
+  if ("error" in auth && auth.error) return auth.error;
 
-  const body = await req.json().catch(() => null);
+  const body = await req.json().catch((): null => null);
   const parsed = createOrderSchema.safeParse(body);
   if (!parsed.success) {
     const fields: Record<string, string> = {};
