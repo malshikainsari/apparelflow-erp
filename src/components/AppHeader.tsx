@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import RoleSwitcher from "./RoleSwitcher";
 
 export default function AppHeader({ fullName, roleLabel }: { fullName: string; roleLabel: string }) {
   const router = useRouter();
@@ -41,6 +42,7 @@ export default function AppHeader({ fullName, roleLabel }: { fullName: string; r
         </div>
 
         <div className="flex items-center gap-2 sm:gap-3">
+          <RoleSwitcher current={roleLabel} />
           {/* User chip */}
           <div className="flex items-center gap-2.5 rounded-full border border-gray-600 py-1 pl-1 pr-4">
             <div
